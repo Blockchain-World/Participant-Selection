@@ -191,7 +191,7 @@ contract Main is Modify {
             sid_to_end_time[sid]
         );
         uint Payment_DP = AddtoPaymentdp[msg.sender];
-        // 成交金额 to deliverer
+        
         uint deliveryPayment = ctr * Payment_DP;
         require(address(this).balance >= deliveryPayment, "Insufficient contract balance");
 
