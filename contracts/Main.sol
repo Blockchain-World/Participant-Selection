@@ -225,7 +225,7 @@ contract Main is Modify {
         // require(block.timestamp >= timeout_dispute, "Dispute timeout not reached yet");
         require(round == state.revealed, "Contract not in revealed state");
         
-        // 使用 SafeMath 或确保所有计算都使用相同类型
+        // use SafeMath or ensure all calculations use the same type
         uint256 providerPayment = ctr * payment_PC;
 
         
@@ -236,13 +236,13 @@ contract Main is Modify {
         
         if (ledger[provider] > 0) {
             uint256 providerAmount = ledger[provider];
-            ledger[provider] = 0; // 清零账本余额
+            ledger[provider] = 0; // clear the ledger balance
             payable(provider).transfer(providerAmount);
         }
         
         if (ledger[consumer] > 0) {
             uint256 consumerAmount = ledger[consumer];
-            ledger[consumer] = 0; // 清零账本余额
+            ledger[consumer] = 0; // clear the ledger balance
             payable(consumer).transfer(consumerAmount);
         }
         

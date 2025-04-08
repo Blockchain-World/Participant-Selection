@@ -177,7 +177,7 @@ describe("P2PCDN contract test", function () {
         const allDeliverers = await delivererContract.getDelivererAddress();
         console.log("All Deliverer addresses:", allDeliverers);
         
-        // 检查deliverer1是否在列表中
+        // check if deliverer1 is in the list
         const isDeliverer1InList = allDeliverers.includes(deliverer1.address);
         console.log("deliverer1 is in Deliverer list:", isDeliverer1InList);
         
@@ -201,17 +201,17 @@ describe("P2PCDN contract test", function () {
 
       console.log("----------------------------------------------------------------------\n");
       
-      // 2.1. Deliverer2加入
+      // 2.1. Deliverer2 join
       console.log("\nStep 2.2: deliverer2 call join method");
       console.log("----------------------------------------------------------------------");
-      // deliverer2的报价可以与deliverer1不同
+      // deliverer2's bid can be different from deliverer1's bid
 
       console.log("Deliverer2 start to call Join method, parameters as follows:");
       console.log("Deliverer2 address:", deliverer2.address);
       console.log("Deliverer2 bid Payment_PD:", ethers.formatEther(deliverer2Bid), "ETH");
       console.log("Provider highest acceptable price Payment_PD:", ethers.formatEther(paymentPD), "ETH");
       console.log("execution result status:", resp2.status === 1 ? "✅ join method executed successfully!" : "❌ join transaction executed failed!");
-      // 检查deliverer是否已加入
+      // check if deliverer is joined
       const isCandidate1 = await mainContract.iscandidate(deliverer1.address);
       console.log("deliverer1 is a candidate:", isCandidate1);
             
@@ -219,7 +219,7 @@ describe("P2PCDN contract test", function () {
       console.log("deliverer2 is a candidate:", isCandidate2);
       console.log("----------------------------------------------------------------------\n\n");
       
-
+      
       
 
       
@@ -227,7 +227,7 @@ describe("P2PCDN contract test", function () {
       console.log("Step 3: stop the join phase (manually stop, otherwise wait for time to pass)");
       console.log("----------------------------------------------------------------------");
       console.log("Provider sends Content to all Candidate deliverers");
-      // 由于 provider1 是 Main 合约的部署者，所以它应该是 owner
+      // Since provider1 is the deployer of the Main contract, it should be owner
       const joinStopTx = await mainContract.connect(provider1).join_stop();
       await joinStopTx.wait();
       console.log("join phase stopped");
@@ -237,7 +237,7 @@ describe("P2PCDN contract test", function () {
       
       
       
-      // 4. deliverer准备就绪
+      // 4. deliverer prepared
       console.log("\nStep 4: deliverer1/deliverer2 call deliverers_prepared method");
       console.log("----------------------------------------------------------------------");
       console.log("Deliverers receive Content and store locally, then reply Provider ready");
@@ -1085,11 +1085,11 @@ describe("P2PCDN contract test", function () {
       console.log("----------------------------------------------------------------------");
 
       try {
-        // 先检查合约状态是否为 revealed (7)
+        // check if the contract state is revealed (7)
         const stateBeforePoM = await mainContract.round();
         console.log("Current contract state:", stateBeforePoM.toString());
         
-        if (stateBeforePoM.toString() === "8") { // revealed 状态
+        if (stateBeforePoM.toString() === "8") { // revealed state
           console.log("✅ Contract is in revealed state, can test PoM");
           
           // 记录调用前的状态
@@ -1118,29 +1118,28 @@ describe("P2PCDN contract test", function () {
           console.log("- Content root hash root_m:", root_m);
           console.log("- Payment per block payment_PC:", ethers.formatEther(payment_PC), "ETH");
           
-          // 准备 PoM 方法所需的参数
+          // prepare parameters for PoM method
           console.log("\nPrepare PoM method parameters...");
           
-          // 1. _i_j_steps: 表示步骤的数组
-          const _i_j_steps = [1, 2, 3]; // 示例值
+          // 1. _i_j_steps: array of steps
+          const _i_j_steps = [1, 2, 3]; // example values
           
-          // 2. _c_i: 内容块哈希数组
+          // 2. _c_i: array of content block hash
           const _c_i = [
             "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
             "0x2345678901abcdef2345678901abcdef2345678901abcdef2345678901abcdef"
           ];
           
-          // 3. _signature_i_P: Provider 签名
+          // 3. _signature_i_P: Provider signature
           const _signature_i_P = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef00";
           
-          // 4. _m_i_hash: 内容块哈希
+          // 4. _m_i_hash: content block hash
           const _m_i_hash = "0x3456789012abcdef3456789012abcdef3456789012abcdef3456789012abcdef";
           
-          // 5. _merkleProof: Merkle 证明数组 - 根据 Utility.sol 中的 MerkleProof 结构体定义
           const _merkleProof = [
             {
-              label: "0x4567890123abcdef4567890123abcdef4567890123abcdef4567890123abcdef", // 使用 label 而不是 hash
-              posIden: 0 // 使用 posIden 而不是 position
+              label: "0x4567890123abcdef4567890123abcdef4567890123abcdef4567890123abcdef", 
+              posIden: 0 
             },
             {
               label: "0x5678901234abcdef5678901234abcdef5678901234abcdef5678901234abcdef",
@@ -1152,10 +1151,10 @@ describe("P2PCDN contract test", function () {
           const _st_erk = [
             {
               position: 1,
-              C1_X: ethers.parseEther("1"), // 使用 C1_X 而不是 c_1.X
-              C1_Y: ethers.parseEther("2"), // 使用 C1_Y 而不是 c_1.Y
-              C2_X: ethers.parseEther("3"), // 使用 C2_X 而不是 c_2.X
-              C2_Y: ethers.parseEther("4")  // 使用 C2_Y 而不是 c_2.Y
+              C1_X: ethers.parseEther("1"),  
+              C1_Y: ethers.parseEther("2"), 
+              C2_X: ethers.parseEther("3"), 
+              C2_Y: ethers.parseEther("4")  
             },
             {
               position: 2,
@@ -1166,11 +1165,11 @@ describe("P2PCDN contract test", function () {
             }
           ];
           
-          // 7. _st_rk: 提交的 RK 数组 - 根据 Utility.sol 中的 SubmittedRK 结构体定义
+
           const _st_rk = [
             {
               position: 1,
-              value: "0x6789012345abcdef6789012345abcdef6789012345abcdef6789012345abcdef" // 使用 value 而不是 rk
+              value: "0x6789012345abcdef6789012345abcdef6789012345abcdef6789012345abcdef" 
             },
             {
               position: 2,
@@ -1178,15 +1177,15 @@ describe("P2PCDN contract test", function () {
             }
           ];
           
-          // 8. _vpke_proof: VPKE 证明数组 - 根据 Utility.sol 中的 VPKEProof 结构体定义
+          // 8. _vpke_proof: VPKE proof array - according to the VPKEProof structure defined in Utility.sol
           const _vpke_proof = [
             {
               position: 1,
-              A_X: ethers.parseEther("11"), // 使用 A_X 而不是 a.X
-              A_Y: ethers.parseEther("12"), // 使用 A_Y 而不是 a.Y
-              B_X: ethers.parseEther("13"), // 使用 B_X 而不是 b.X
-              B_Y: ethers.parseEther("14"), // 使用 B_Y 而不是 b.Y
-              Z: ethers.parseEther("19")    // 使用 Z 而不是 proof 结构
+              A_X: ethers.parseEther("11"), 
+              A_Y: ethers.parseEther("12"), 
+              B_X: ethers.parseEther("13"), 
+              B_Y: ethers.parseEther("14"), 
+              Z: ethers.parseEther("19")    
             },
             {
               position: 2,
@@ -1369,7 +1368,7 @@ describe("P2PCDN contract test", function () {
         console.log("reset method gas consumption:", resetGasUsed.toString(), "gas");
         console.log("reset transaction status:", resetReceipt.status === 1 ? "✅ Success" : "❌ Failed");
         
-        // 验证重置后的状态
+        // check the state after reset
         const stateAfterReset = await mainContract.round();
         const providerAfterReset = await mainContract.provider();
         const consumerAfterReset = await mainContract.consumer();
@@ -1401,7 +1400,7 @@ describe("P2PCDN contract test", function () {
         console.log("\nArray status check:");
         console.log("- selected_deliverers array length:", selectedDeliverersCount);
         
-        // 验证结果
+        // check the results
         console.log("\nreset verification results:");
         
         // Check if the address has been reset to zero address
@@ -1439,21 +1438,21 @@ describe("P2PCDN contract test", function () {
           console.log("❌ Consumer ledger balance has not been cleared");
         }
         
-        // 检查数组是否清空
+        // check if the array has been cleared
         if (selectedDeliverersCount === 0) {
           console.log("✅ selected_deliverers array has been cleared");
         } else {
           console.log("❌ selected_deliverers array has not been cleared");
         }
         
-        // 检查合约状态是否重置为 sold
-        if (stateAfterReset.toString() === "10") { // sold 状态对应的枚举值
+        // check if the contract state has been reset to sold
+        if (stateAfterReset.toString() === "10") { // sold state corresponding to the enum value
           console.log("✅ Contract state has been reset to sold");
         } else {
           console.log("❌ Contract state has not been reset to sold");
         }
         
-        // 整体结果
+        // check the overall results
         if (
           providerAfterReset === "0x0000000000000000000000000000000000000000" &&
           consumerAfterReset === "0x0000000000000000000000000000000000000000" &&
